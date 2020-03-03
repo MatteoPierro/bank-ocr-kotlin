@@ -15,16 +15,23 @@ class EntriesReaderTest {
     }
 
     @Test
-    internal fun `it reads entries`() {
+    internal fun `it reads an entry with one block`() {
         File(inputFile).bufferedWriter().use { out ->
-            out.write("    _  _     _  _  _  _  _ ")
-            out.write("  | _| _||_||_ |_   ||_||_|")
-            out.write("  ||_  _|  | _||_|  ||_| _|")
-            out.write("                           ")
+            out.write("   ")
+            out.write("  |")
+            out.write("  |")
+            out.write("   ")
         }
 
         val entries = EntriesReader().readAll()
 
-        assertThat(entries).isEqualTo(Entries(listOf(Entry())))
+        assertThat(entries).isEqualTo(Entries(listOf(
+                Entry(
+                        Block("   " +
+                                "  |" +
+                                "  |" +
+                                "   ")
+                ))))
+
     }
 }
