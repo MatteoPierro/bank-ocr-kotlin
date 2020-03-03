@@ -16,7 +16,7 @@ class BankOcrTest {
     @RelaxedMockK
     lateinit var entriesOcr: EntriesOcr
 
-    lateinit var bankOcr: BankOcr
+    private lateinit var bankOcr: BankOcr
 
     @BeforeEach
     internal fun setUp() {
