@@ -1,7 +1,7 @@
 package bankOcr
 
-class EntryReader {
-    fun readAll(): Entries {
+class EntryOcr {
+    fun scan(entries: Entries) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

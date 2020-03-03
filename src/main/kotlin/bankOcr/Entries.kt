@@ -1,0 +1,5 @@
+package bankOcr
+
+class Entries {
+
+}
