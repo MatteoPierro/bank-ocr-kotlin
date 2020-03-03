@@ -1,6 +1,6 @@
 package bankOcr
 
-class EntryOcr {
+class EntriesOcr {
     fun scan(entries: Entries) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

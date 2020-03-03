@@ -11,29 +11,29 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class BankOcrTest {
     @RelaxedMockK
-    lateinit var entryReader: EntryReader
+    lateinit var entriesReader: EntriesReader
 
     @RelaxedMockK
-    lateinit var entriesOcr: EntryOcr
+    lateinit var entriesOcr: EntriesOcr
 
     lateinit var bankOcr: BankOcr
 
     @BeforeEach
     internal fun setUp() {
-        bankOcr = BankOcr(entryReader, entriesOcr)
+        bankOcr = BankOcr(entriesReader, entriesOcr)
     }
 
     @Test
     internal fun `it reads all the entries`() {
         bankOcr.scan()
 
-        verify { entryReader.readAll() }
+        verify { entriesReader.readAll() }
     }
 
     @Test
     internal fun `it scans entries`() {
         val entries = Entries()
-        every { entryReader.readAll() }.returns(entries)
+        every { entriesReader.readAll() }.returns(entries)
 
         bankOcr.scan()
 

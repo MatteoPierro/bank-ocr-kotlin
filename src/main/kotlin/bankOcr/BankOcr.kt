@@ -1,8 +1,8 @@
 package bankOcr
 
-class BankOcr(private val entryReader: EntryReader, private val entriesOcr: EntryOcr) {
+class BankOcr(private val entriesReader: EntriesReader, private val entriesOcr: EntriesOcr) {
     fun scan() {
-        val entries = entryReader.readAll()
+        val entries = entriesReader.readAll()
         entriesOcr.scan(entries)
     }
 }
