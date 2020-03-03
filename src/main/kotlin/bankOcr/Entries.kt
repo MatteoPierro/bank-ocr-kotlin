@@ -1,5 +1,3 @@
 package bankOcr
 
-class Entries {
-
-}
+data class Entries(val value: List<Entry> = listOf())
