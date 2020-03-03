@@ -17,21 +17,47 @@ class EntriesReaderTest {
     @Test
     internal fun `it reads an entry with one block`() {
         File(inputFile).bufferedWriter().use { out ->
-            out.write("   ")
-            out.write("  |")
-            out.write("  |")
-            out.write("   ")
+            out.write("   \n")
+            out.write("  |\n")
+            out.write("  |\n")
+            out.write("   \n")
         }
 
-        val entries = EntriesReader().readAll()
+        val entries = EntriesReader(inputFile).readAll()
 
         assertThat(entries).isEqualTo(Entries(listOf(
-                Entry(
-                        Block("   " +
-                                "  |" +
-                                "  |" +
+                Entry(listOf(
+                        Block("   \n" +
+                                "  |\n" +
+                                "  |\n" +
                                 "   ")
+                )
                 ))))
+
+    }
+
+    @Test
+    internal fun `it reads an entry with two blocks`() {
+        File(inputFile).bufferedWriter().use { out ->
+            out.write("    _ \n")
+            out.write("  | _|\n")
+            out.write("  ||_ \n")
+            out.write("      \n")
+        }
+
+        val entries = EntriesReader(inputFile).readAll()
+
+        assertThat(entries).isEqualTo(Entries(listOf(
+                Entry(listOf(
+                        Block("   \n" +
+                                "  |\n" +
+                                "  |\n" +
+                                "   "),
+                        Block(" _ \n" +
+                                " _|\n" +
+                                "|_ \n" +
+                                "   ")
+                )))))
 
     }
 }
