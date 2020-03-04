@@ -1,30 +1,35 @@
 package bankOcr
 
 import java.io.File
+import kotlin.streams.toList
+
+private typealias RawEntry = List<List<String>>
 
 class EntriesReader(private val inputFile: String = "") {
+
     fun readAll(): Entries {
         val reader = File(inputFile).bufferedReader()
-        val firstLine = reader.readLine()
-        val secondLine = reader.readLine()
-        val thirdLine = reader.readLine()
-        val forthLine = reader.readLine()
-        val firstBlock = Block(
-                firstLine.substring(0, 3) + "\n" +
-                        secondLine.substring(0, 3) + "\n"+
-                        thirdLine.substring(0, 3) + "\n" +
-                        forthLine.substring(0, 3)
-        )
-        if (firstLine.length == 3) {
-            return Entries(listOf(Entry(listOf(firstBlock))))
-        }
 
-        val secondBlock = Block(
-                firstLine.substring(3, 6) + "\n" +
-                        secondLine.substring(3, 6) + "\n" +
-                        thirdLine.substring(3, 6) + "\n" +
-                        forthLine.substring(3, 6)
-        )
-        return Entries(listOf(Entry(listOf(firstBlock, secondBlock))))
+        val rawEntries = reader.lines().toList().chunked(ENTRY_SIZE)
+        val entries = rawEntries.map {
+            it.map { line -> line.chunked(BLOCK_SIZE) }
+        }.map { toEntry(it) }
+
+        return Entries(entries)
+    }
+
+    private fun toEntry(rawEntry: RawEntry): Entry {
+        val blocksIndexes = rawEntry.component1().indices
+        val blocks = blocksIndexes
+                .map { blockIndex ->
+                    rawEntry.joinToString(separator = "\n") { it[blockIndex] }
+                }
+                .map { Block(it) }
+        return Entry(blocks)
+    }
+
+    companion object {
+        const val ENTRY_SIZE = 4
+        const val BLOCK_SIZE = 3
     }
 }

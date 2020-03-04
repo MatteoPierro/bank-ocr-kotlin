@@ -1,7 +1,7 @@
 package bankOcr
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
+import assertk.assertions.containsExactly
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -25,15 +25,10 @@ class EntriesReaderTest {
 
         val entries = EntriesReader(inputFile).readAll()
 
-        assertThat(entries).isEqualTo(Entries(listOf(
-                Entry(listOf(
-                        Block("   \n" +
-                                "  |\n" +
-                                "  |\n" +
-                                "   ")
+        assertThat(entries.value)
+                .containsExactly(
+                    Entry(listOf(Block.one))
                 )
-                ))))
-
     }
 
     @Test
@@ -47,17 +42,9 @@ class EntriesReaderTest {
 
         val entries = EntriesReader(inputFile).readAll()
 
-        assertThat(entries).isEqualTo(Entries(listOf(
-                Entry(listOf(
-                        Block("   \n" +
-                                "  |\n" +
-                                "  |\n" +
-                                "   "),
-                        Block(" _ \n" +
-                                " _|\n" +
-                                "|_ \n" +
-                                "   ")
-                )))))
-
+        assertThat(entries.value)
+                .containsExactly(
+                    Entry(listOf(Block.one, Block.two))
+                )
     }
 }
