@@ -12,8 +12,8 @@ class EntriesReader(private val linesReader: LinesReader) {
         return Entries(entries)
     }
 
-    private fun entriesFrom(lines: List<String>): List<Entry> {
-        val rawEntries = lines.chunked(ENTRY_SIZE)
+    private fun entriesFrom(lines: Lines): List<Entry> {
+        val rawEntries = lines.value.chunked(ENTRY_SIZE)
         val entries = rawEntries.map { rawEntry ->
             rawEntry.map { line -> line.chunked(BLOCK_SIZE) }
         }.map { toEntry(it) }
