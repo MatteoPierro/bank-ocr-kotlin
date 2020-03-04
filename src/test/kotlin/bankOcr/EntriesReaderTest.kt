@@ -8,18 +8,17 @@ import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import java.io.File
 
 @ExtendWith(MockKExtension::class)
 class EntriesReaderTest {
-    private val inputFile = "input.txt"
-
     @RelaxedMockK
     lateinit var linesReader: LinesReader
 
+    lateinit var entriesReader: EntriesReader
+
     @BeforeEach
     internal fun setUp() {
-        File(inputFile).delete()
+        entriesReader = EntriesReader(linesReader)
     }
 
     @Test
@@ -33,7 +32,7 @@ class EntriesReaderTest {
                                 "   "
                         )))
 
-        val entries = EntriesReader(linesReader).readAll()
+        val entries = entriesReader.readAll()
 
         assertThat(entries.value)
                 .containsExactly(
@@ -43,14 +42,16 @@ class EntriesReaderTest {
 
     @Test
     internal fun `it reads an entry with two blocks`() {
-        File(inputFile).bufferedWriter().use { out ->
-            out.write("    _ \n")
-            out.write("  | _|\n")
-            out.write("  ||_ \n")
-            out.write("      \n")
-        }
+        every { linesReader.readLines() }
+                .returns(
+                        Lines(listOf(
+                                "    _ ",
+                                "  | _|",
+                                "  ||_ ",
+                                "      "
+                        )))
 
-        val entries = EntriesReader(LinesReader(inputFile)).readAll()
+        val entries = entriesReader.readAll()
 
         assertThat(entries.value)
                 .containsExactly(
