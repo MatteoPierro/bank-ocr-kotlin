@@ -1,26 +1,27 @@
 package bankOcr
 
-import java.io.File
-import kotlin.streams.toList
-
 private typealias RawEntry = List<List<String>>
 
-class EntriesReader(private val inputFile: String = "") {
+class EntriesReader(private val linesReader: LinesReader) {
 
     fun readAll(): Entries {
-        val reader = File(inputFile).bufferedReader()
+        val lines = linesReader.readLines()
 
-        val rawEntries = reader.lines().toList().chunked(ENTRY_SIZE)
-        val entries = rawEntries.map {
-            it.map { line -> line.chunked(BLOCK_SIZE) }
-        }.map { toEntry(it) }
+        val entries = entriesFrom(lines)
 
         return Entries(entries)
     }
 
+    private fun entriesFrom(lines: List<String>): List<Entry> {
+        val rawEntries = lines.chunked(ENTRY_SIZE)
+        val entries = rawEntries.map { rawEntry ->
+            rawEntry.map { line -> line.chunked(BLOCK_SIZE) }
+        }.map { toEntry(it) }
+        return entries
+    }
+
     private fun toEntry(rawEntry: RawEntry): Entry {
-        val blocksIndexes = rawEntry.component1().indices
-        val blocks = blocksIndexes
+        val blocks = rawEntry.blocksIndexes()
                 .map { blockIndex ->
                     rawEntry.joinToString(separator = "\n") { it[blockIndex] }
                 }
@@ -33,3 +34,5 @@ class EntriesReader(private val inputFile: String = "") {
         const val BLOCK_SIZE = 3
     }
 }
+
+private fun RawEntry.blocksIndexes() = this.component1().indices

@@ -23,7 +23,7 @@ class EntriesReaderTest {
             out.write("   \n")
         }
 
-        val entries = EntriesReader(inputFile).readAll()
+        val entries = EntriesReader(LinesReader(inputFile)).readAll()
 
         assertThat(entries.value)
                 .containsExactly(
@@ -40,7 +40,7 @@ class EntriesReaderTest {
             out.write("      \n")
         }
 
-        val entries = EntriesReader(inputFile).readAll()
+        val entries = EntriesReader(LinesReader(inputFile)).readAll()
 
         assertThat(entries.value)
                 .containsExactly(
