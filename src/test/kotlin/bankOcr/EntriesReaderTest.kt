@@ -14,7 +14,7 @@ class EntriesReaderTest {
     @RelaxedMockK
     lateinit var linesReader: LinesReader
 
-    lateinit var entriesReader: EntriesReader
+    private lateinit var entriesReader: EntriesReader
 
     @BeforeEach
     internal fun setUp() {

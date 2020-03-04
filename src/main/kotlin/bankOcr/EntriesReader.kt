@@ -1,23 +1,19 @@
 package bankOcr
 
-private typealias RawEntry = List<List<String>>
-
 class EntriesReader(private val linesReader: LinesReader) {
 
     fun readAll(): Entries {
         val lines = linesReader.readLines()
 
         val entries = entriesFrom(lines)
-
         return Entries(entries)
     }
 
     private fun entriesFrom(lines: Lines): List<Entry> {
         val rawEntries = lines.value.chunked(ENTRY_SIZE)
-        val entries = rawEntries.map { rawEntry ->
+        return rawEntries.map { rawEntry ->
             rawEntry.map { line -> line.chunked(BLOCK_SIZE) }
         }.map { toEntry(it) }
-        return entries
     }
 
     private fun toEntry(rawEntry: RawEntry): Entry {
@@ -30,9 +26,12 @@ class EntriesReader(private val linesReader: LinesReader) {
     }
 
     companion object {
-        const val ENTRY_SIZE = 4
-        const val BLOCK_SIZE = 3
+
+        private const val ENTRY_SIZE = 4
+        private const val BLOCK_SIZE = 3
     }
 }
+
+private typealias RawEntry = List<List<String>>
 
 private fun RawEntry.blocksIndexes() = this.component1().indices
