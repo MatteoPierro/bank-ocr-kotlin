@@ -58,4 +58,32 @@ class EntriesReaderTest {
                         Entry(listOf(Block.one, Block.two))
                 )
     }
+
+    @Test
+    internal fun `it reads an entry`() {
+        every { linesReader.readLines() }
+                .returns(
+                        Lines(listOf(
+                                "    _  _  _  _  _  _  _  _ ",
+                                "  | _| _| _| _| _| _| _| _|",
+                                "  ||_ |_ |_ |_ |_ |_ |_ |_ ",
+                                "                           "
+                        )))
+
+        val entries = entriesReader.readAll()
+
+        assertThat(entries.value)
+                .containsExactly(
+                        Entry(listOf(
+                                Block.one,
+                                Block.two,
+                                Block.two,
+                                Block.two,
+                                Block.two,
+                                Block.two,
+                                Block.two,
+                                Block.two,
+                                Block.two
+                        )))
+    }
 }
