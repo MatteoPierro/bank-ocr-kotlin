@@ -22,44 +22,6 @@ class EntriesReaderTest {
     }
 
     @Test
-    internal fun `it reads an entry with one block`() {
-        every { linesReader.readLines() }
-                .returns(
-                        Lines(listOf(
-                                "   ",
-                                "  |",
-                                "  |",
-                                "   "
-                        )))
-
-        val entries = entriesReader.readAll()
-
-        assertThat(entries.value)
-                .containsExactly(
-                        Entry(listOf(Block.one))
-                )
-    }
-
-    @Test
-    internal fun `it reads an entry with two blocks`() {
-        every { linesReader.readLines() }
-                .returns(
-                        Lines(listOf(
-                                "    _ ",
-                                "  | _|",
-                                "  ||_ ",
-                                "      "
-                        )))
-
-        val entries = entriesReader.readAll()
-
-        assertThat(entries.value)
-                .containsExactly(
-                        Entry(listOf(Block.one, Block.two))
-                )
-    }
-
-    @Test
     internal fun `it reads an entry`() {
         every { linesReader.readLines() }
                 .returns(
