@@ -1,6 +1,7 @@
 package bankOcr
 
 class LinesParser {
+    
     fun toEntries(lines: Lines) = lines.toEntries(ENTRY_SIZE, BLOCK_SIZE)
 
     companion object {
