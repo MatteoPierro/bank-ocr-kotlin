@@ -2,9 +2,5 @@ package bankOcr
 
 class EntriesReader(private val linesReader: LinesReader, private val linesParser: LinesParser) {
 
-    fun readAll(): Entries {
-        val lines = linesReader.readLines()
-
-        return linesParser.toEntries(lines)
-    }
+    fun readAll(): Entries = linesReader.readLines().let { linesParser.toEntries(it) }
 }
