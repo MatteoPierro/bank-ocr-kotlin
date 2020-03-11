@@ -22,87 +22,13 @@ class EntriesReaderTest {
 
     @BeforeEach
     internal fun setUp() {
-        entriesReader = EntriesReader(linesReader)
+        entriesReader = EntriesReader(linesReader, linesParser)
     }
 
     @Test
     internal fun `it reads lines`() {
-        val entriesReader = EntriesReader(linesReader, linesParser)
-
         entriesReader.readAll()
 
         verify { linesReader.readLines() }
-    }
-
-    @Test
-    internal fun `it reads an entry`() {
-        every { linesReader.readLines() }
-                .returns(
-                        Lines(listOf(
-                                "    _  _  _  _  _  _  _  _ ",
-                                "  | _| _| _| _| _| _| _| _|",
-                                "  ||_ |_ |_ |_ |_ |_ |_ |_ ",
-                                "                           "
-                        )))
-
-        val entries = entriesReader.readAll()
-
-        assertThat(entries.value)
-                .containsExactly(
-                        Entry(listOf(
-                                Block.one,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two
-                        )))
-    }
-
-    @Test
-    internal fun `it reads multiple entries`() {
-        every { linesReader.readLines() }
-                .returns(
-                        Lines(listOf(
-                                "    _  _  _  _  _  _  _  _ ",
-                                "  | _| _| _| _| _| _| _| _|",
-                                "  ||_ |_ |_ |_ |_ |_ |_ |_ ",
-                                "                           ",
-                                "    _  _  _  _  _  _  _  _ ",
-                                "  | _| _| _| _| _| _| _| _|",
-                                "  ||_ |_ |_ |_ |_ |_ |_ |_ ",
-                                "                           "
-                        )))
-
-        val entries = entriesReader.readAll()
-
-        assertThat(entries.value)
-                .containsExactly(
-                        Entry(listOf(
-                                Block.one,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two
-                        )),
-                        Entry(listOf(
-                                Block.one,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two,
-                                Block.two
-                        ))
-                )
     }
 }
